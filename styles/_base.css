@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --border-color: #232b2b;
+}
+
+body {
+  margin: 0;
+}

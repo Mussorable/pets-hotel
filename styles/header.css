@@ -1,0 +1,26 @@
+.header {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 120px;
+  width: 100%;
+}
+
+.nav-list {
+  list-style: none;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.nav-item:not(:last-child) {
+  margin-right: 10px;
+}
+
+.nav-item > a {
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+}
