@@ -2,6 +2,10 @@
   font-size: 1.3rem;
 }
 
+.text--sm {
+  font-size: 0.9rem;
+}
+
 .uppercase {
   text-transform: uppercase;
 }

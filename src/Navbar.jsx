@@ -1,16 +1,29 @@
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
+import LineData from "./LineData";
 
 export default function Navbar() {
+
+    const dateOptions = {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false
+    };
+    
     const liClasses = clsx({
         "nav-item": true,
         "text--md": true,
     });
+
     const aClasses = clsx({
         "button": true,
         "uppercase": true,
         "letter-spacing--bg": true
-    });
+    });  
 
     return (<header>
         <div className="header">
@@ -56,28 +69,31 @@ export default function Navbar() {
                     40.902344 25.570313l.023437.109374-.105469.023438c-18.351562 4.203125-36.644531-7.230469-40.910156-25.570312zm0 0"/>
             </svg>
             <nav className="nav-list">
-                <li className={liClasses}>
-                    <NavLink
-                        className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
-                        to="/">
-                            Home
-                    </NavLink>
-                </li>
-                <li className={liClasses}>
-                    <NavLink
-                        className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
-                        to="/pets">
-                            Pets
-                    </NavLink>
-                </li>
-                <li className={liClasses}>
-                    <NavLink
-                        className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
-                        to="/pet-owners">
-                            Pet owners
-                    </NavLink>
-                </li>
+                <ul>
+                    <li className={liClasses}>
+                        <NavLink
+                            className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
+                            to="/">
+                                Home
+                        </NavLink>
+                    </li>
+                    <li className={liClasses}>
+                        <NavLink
+                            className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
+                            to="/pets">
+                                Pets
+                        </NavLink>
+                    </li>
+                    <li className={liClasses}>
+                        <NavLink
+                            className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
+                            to="/pet-owners">
+                                Pet owners
+                        </NavLink>
+                    </li>
+                </ul>
             </nav>
         </div>
+        <LineData options={dateOptions} />
     </header>);
 }
