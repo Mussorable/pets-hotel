@@ -8,7 +8,8 @@ export default function Navbar() {
     });
     const aClasses = clsx({
         "button": true,
-        "uppercase": true
+        "uppercase": true,
+        "letter-spacing--bg": true
     });
 
     return (<header>
