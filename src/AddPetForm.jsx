@@ -11,7 +11,8 @@ export default function AddPetForm() {
         "Rottweilers",
         "Beagles",
         "Dachshunds",
-        "German Shorthaired Pointers"
+        "German Shorthaired Pointers",
+        "American Staffordshire Terrier"
     ];
 
     const petColor = [
@@ -30,19 +31,20 @@ export default function AddPetForm() {
         "Mike",
         "John Doe",
         "Anthony",
-        "Sam Green"
+        "Sam Green",
+        "Oleh"
     ];
 
     return <div className="add-form">
-        <form>
+        <form id="pet-form">
             <label className="sr-only" htmlFor="pet-name-input">Pet name</label>
-            <input type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
+            <input className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
             <label className="sr-only" htmlFor="pet-breed-input">Pet breed</label>
-            <input type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
+            <input className="input" type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
             <label className="sr-only" htmlFor="pet-color-input">Pet color</label>
-            <input type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
+            <input className="input" type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
             <label className="sr-only" htmlFor="pet-owner-input">Pet owner</label>
-            <input type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
+            <input className="input" type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
 
             <datalist id="suggested-breeds">
                 {petBreed.map((breed, index) => { return <option key={index} value={breed}>{breed}</option> })}

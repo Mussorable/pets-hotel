@@ -13,7 +13,7 @@ export default function Pets() {
         <main>
             <div className="container">
                 <div className="tab">
-                    <h1 className="tab-heading">Pets</h1>
+                    <h1 className="tab-heading title--lg">Pets</h1>
                     <AddPetForm />
                 </div>
             </div>

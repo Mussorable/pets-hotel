@@ -1,0 +1,15 @@
+.input {
+  all: unset;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 8px 10px;
+  width: 160px;
+  margin-right: 10px;
+  background-color: var(--inputs);
+  box-sizing: border-box;
+}
+
+.input:focus-visible {
+  border: 2px solid rgb(0, 117, 167);
+  outline: none;
+}
