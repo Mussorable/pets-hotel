@@ -1,0 +1,20 @@
+table,
+th,
+td {
+  border: 1px solid var(--table-border-color);
+}
+
+th,
+tr {
+  padding: var(--form-padding);
+  text-align: start;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: var(--light-even);
+}

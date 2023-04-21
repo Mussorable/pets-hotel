@@ -8,8 +8,10 @@ html {
 
 :root {
   --border-color: #232b2b;
+  --table-border-color: gray;
   --bg-color: #f2f2f2;
   --inputs: snow;
+  --light-even: snow;
   --form-padding: 8px 10px;
   --button-color: #24a0ed;
 }

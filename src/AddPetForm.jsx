@@ -40,7 +40,7 @@ export default function AddPetForm() {
     }
 
     return <div className="add-form">
-        <form id="pet-form" onSubmit={handleFormSubmit}>
+        <form className="form" id="pet-form" onSubmit={handleFormSubmit}>
             <label className="sr-only" htmlFor="pet-name-input">Pet name</label>
             <input className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
             <label className="sr-only" htmlFor="pet-breed-input">Pet breed</label>
