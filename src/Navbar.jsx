@@ -20,7 +20,7 @@ export default function Navbar() {
     });
 
     const aClasses = clsx({
-        "button": true,
+        "link": true,
         "uppercase": true,
         "letter-spacing--bg": true
     });  

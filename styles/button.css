@@ -1,4 +1,30 @@
-.button {
+.link {
   text-decoration: none;
   color: inherit;
+}
+
+.button {
+  all: unset;
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: var(--form-padding);
+  background-color: var(--button-color);
+  color: var(--inputs);
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.button:active {
+  translate: 1px 1px;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--button-color);
 }

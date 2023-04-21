@@ -2,7 +2,7 @@
   all: unset;
   border: 1px solid var(--border-color);
   border-radius: 3px;
-  padding: 8px 10px;
+  padding: var(--form-padding);
   width: 160px;
   margin-right: 10px;
   background-color: var(--inputs);
@@ -10,6 +10,6 @@
 }
 
 .input:focus-visible {
-  border: 2px solid rgb(0, 117, 167);
+  border: 2px solid var(--button-color);
   outline: none;
 }

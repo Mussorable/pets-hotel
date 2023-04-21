@@ -35,8 +35,12 @@ export default function AddPetForm() {
         "Oleh"
     ];
 
+    function handleFormSubmit(event) {
+        event.preventDefault();
+    }
+
     return <div className="add-form">
-        <form id="pet-form">
+        <form id="pet-form" onSubmit={handleFormSubmit}>
             <label className="sr-only" htmlFor="pet-name-input">Pet name</label>
             <input className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
             <label className="sr-only" htmlFor="pet-breed-input">Pet breed</label>
@@ -55,7 +59,7 @@ export default function AddPetForm() {
             <datalist id="suggested-owners">
             {petOwner.map((owner, index) => { return <option key={index} value={owner}>{owner}</option> })}
             </datalist>
-            <button type="submit">Add pet</button>
+            <button className="button" type="submit">Add pet</button>
         </form>
     </div>;
 }
