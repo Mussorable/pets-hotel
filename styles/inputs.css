@@ -13,3 +13,7 @@
   border: 2px solid var(--button-color);
   outline: none;
 }
+
+.input-width--xl {
+  width: 17dvw;
+}

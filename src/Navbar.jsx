@@ -84,13 +84,6 @@ export default function Navbar() {
                                 Pets
                         </NavLink>
                     </li>
-                    <li className={liClasses}>
-                        <NavLink
-                            className={({isActive}) => (isActive ? "active" : "") + " " + aClasses}
-                            to="/pet-owners">
-                                Pet owners
-                        </NavLink>
-                    </li>
                 </ul>
             </nav>
         </div>
