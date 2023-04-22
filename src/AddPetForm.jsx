@@ -1,7 +1,16 @@
-export default function AddPetForm() {
+import { useState } from "react";
+import useFetch from "./useFetch";
+
+export default function AddPetForm(props) {
+    const [petName, setPetName] = useState("");
+    const [petBreed, setPetBreed] = useState("");
+    const [petColor, setPetColor] = useState("");
+    const [petOwner, setPetOwner] = useState("");
+
+    const { post } = useFetch("https://pet-hotel-375a8-default-rtdb.europe-west1.firebasedatabase.app/");
 
     // Replace from the API - 20.04.2023
-    const petBreed = [
+    const petBreeds = [
         "French Bulldogs",
         "Labrador Retrievers",
         "Golden Retrievers",
@@ -15,7 +24,7 @@ export default function AddPetForm() {
         "American Staffordshire Terrier"
     ];
 
-    const petColor = [
+    const petColors = [
         "Black",
         "White",
         "Brown",
@@ -27,7 +36,7 @@ export default function AddPetForm() {
         "Yellow"
     ];
 
-    const petOwner = [
+    const petOwners = [
         "Mike",
         "John Doe",
         "Anthony",
@@ -35,29 +44,39 @@ export default function AddPetForm() {
         "Oleh"
     ];
 
+    function refreshForm() {
+        setPetName("");
+        setPetBreed("");
+        setPetColor("");
+        setPetOwner("");
+    }
+
     function handleFormSubmit(event) {
         event.preventDefault();
+        // post("pets", );
+
+        refreshForm();
     }
 
     return <div className="add-form">
         <form className="form" id="pet-form" onSubmit={handleFormSubmit}>
             <label className="sr-only" htmlFor="pet-name-input">Pet name</label>
-            <input className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
+            <input onChange={event => setPetName(event.target.value)} value={petName} className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
             <label className="sr-only" htmlFor="pet-breed-input">Pet breed</label>
-            <input className="input" type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
+            <input onChange={event => setPetBreed(event.target.value)} value={petBreed} className="input" type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
             <label className="sr-only" htmlFor="pet-color-input">Pet color</label>
-            <input className="input" type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
+            <input onChange={event => setPetColor(event.target.value)} value={petColor} className="input" type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
             <label className="sr-only" htmlFor="pet-owner-input">Pet owner</label>
-            <input className="input" type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
+            <input onChange={event => setPetOwner(event.target.value)} value={petOwner} className="input" type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
 
             <datalist id="suggested-breeds">
-                {petBreed.map((breed, index) => { return <option key={index} value={breed}>{breed}</option> })}
+                {petBreeds.map((breed, index) => { return <option key={index} value={breed}>{breed}</option> })}
             </datalist>
             <datalist id="suggested-colors">
-                {petColor.map((color, index) => { return <option key={index} value={color}>{color}</option> })}
+                {petColors.map((color, index) => { return <option key={index} value={color}>{color}</option> })}
             </datalist>
             <datalist id="suggested-owners">
-            {petOwner.map((owner, index) => { return <option key={index} value={owner}>{owner}</option> })}
+            {petOwners.map((owner, index) => { return <option key={index} value={owner}>{owner}</option> })}
             </datalist>
             <button className="button" type="submit">Add pet</button>
         </form>
