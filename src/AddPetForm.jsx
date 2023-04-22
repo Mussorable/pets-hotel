@@ -53,7 +53,12 @@ export default function AddPetForm(props) {
 
     function handleFormSubmit(event) {
         event.preventDefault();
-        // post("pets", );
+        post("pets.json", {
+            petName,
+            petBreed,
+            petColor,
+            petOwner
+        });
 
         refreshForm();
     }
@@ -61,13 +66,13 @@ export default function AddPetForm(props) {
     return <div className="add-form">
         <form className="form" id="pet-form" onSubmit={handleFormSubmit}>
             <label className="sr-only" htmlFor="pet-name-input">Pet name</label>
-            <input onChange={event => setPetName(event.target.value)} value={petName} className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
+            <input required onChange={event => setPetName(event.target.value)} value={petName} className="input" type="text" placeholder="Pet name" name="pet-name" id="pet-name-input" />
             <label className="sr-only" htmlFor="pet-breed-input">Pet breed</label>
-            <input onChange={event => setPetBreed(event.target.value)} value={petBreed} className="input" type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
+            <input required onChange={event => setPetBreed(event.target.value)} value={petBreed} className="input" type="text" placeholder="Pet breed" name="pet-breeds" list="suggested-breeds" id="pet-breed-input" />
             <label className="sr-only" htmlFor="pet-color-input">Pet color</label>
-            <input onChange={event => setPetColor(event.target.value)} value={petColor} className="input" type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
+            <input required onChange={event => setPetColor(event.target.value)} value={petColor} className="input" type="text" placeholder="Pet color" name="pet-color" list="suggested-colors" id="pet-color-input" />
             <label className="sr-only" htmlFor="pet-owner-input">Pet owner</label>
-            <input onChange={event => setPetOwner(event.target.value)} value={petOwner} className="input" type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
+            <input required onChange={event => setPetOwner(event.target.value)} value={petOwner} className="input" type="text" placeholder="Pet owner" name="pet-owner" list="suggested-owners" id="pet-owner-input" />
 
             <datalist id="suggested-breeds">
                 {petBreeds.map((breed, index) => { return <option key={index} value={breed}>{breed}</option> })}
