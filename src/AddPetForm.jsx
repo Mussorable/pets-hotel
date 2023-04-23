@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useFetch from "./useFetch";
 
-export default function AddPetForm(props) {
+export default function AddPetForm({ onPetChange }) {
     const [petName, setPetName] = useState("");
     const [petBreed, setPetBreed] = useState("");
     const [petColor, setPetColor] = useState("");
@@ -60,6 +60,13 @@ export default function AddPetForm(props) {
             petOwner
         });
 
+        onPetChange({
+            petName,
+            petBreed,
+            petColor,
+            petOwner
+        });
+
         refreshForm();
     }
 
@@ -83,7 +90,7 @@ export default function AddPetForm(props) {
             <datalist id="suggested-owners">
             {petOwners.map((owner, index) => { return <option key={index} value={owner}>{owner}</option> })}
             </datalist>
-            <button className="button" type="submit">Add pet</button>
+            <button className="button button-main" type="submit">Add pet</button>
         </form>
     </div>;
 }

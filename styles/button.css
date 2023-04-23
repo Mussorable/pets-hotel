@@ -8,13 +8,29 @@
   box-sizing: border-box;
   border: 1px solid var(--border-color);
   border-radius: 3px;
-  padding: var(--form-padding);
-  background-color: var(--button-color);
   color: var(--inputs);
-  font-weight: bold;
   cursor: pointer;
   opacity: 0.8;
   transition: opacity 0.3s;
+}
+
+.button-table-padding {
+  padding: var(--table-padding);
+}
+
+.button-main {
+  padding: var(--form-padding);
+  background-color: var(--button-color);
+  font-weight: bold;
+}
+
+.button-table--check {
+  background-color: var(--button-color);
+  margin-right: 5px;
+}
+
+.button-table--del {
+  background-color: var(--error-color);
 }
 
 .button:hover {

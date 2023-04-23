@@ -12,8 +12,10 @@ html {
   --bg-color: #f2f2f2;
   --inputs: snow;
   --light-even: #e7e7e7;
-  --form-padding: 8px 10px;
   --button-color: #24a0ed;
+  --error-color: #d21312;
+  --form-padding: 8px 10px;
+  --table-padding: 2px 8px;
 }
 
 body {
