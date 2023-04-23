@@ -6,24 +6,20 @@ export default function AddOwnerForm({ onOwnerChange }) {
 
     const [ownerName, setOwnerName] = useState("");
     const [ownerEmail, setOwnerEmail] = useState("");
-    const [id, setId] = useState(0);
 
     function handleFormSubmit(event) {
         event.preventDefault();
         post("owners.json", {
             ownerName,
-            ownerEmail,
-            id
+            ownerEmail
         });
 
-        setId(prevValue => {
-            console.log(prevValue);
-            return prevValue + 1;
-        });
+        setOwnerName("");
+        setOwnerEmail("");
     }
 
     return <div className="add-form">
-        <form id="owner-form" onSubmit={handleFormSubmit}>
+        <form className="form" id="owner-form" onSubmit={handleFormSubmit}>
             <input value={ownerName} onChange={event => setOwnerName(event.target.value)} className="input input-width--xl" placeholder="Pet Owner Name" type="text" name="owner-name" id="owner-name-input" />
             <input value={ownerEmail} onChange={event => setOwnerEmail(event.target.value)} className="input input-width--xl" placeholder="example@email.com" type="email" name="owner-email" id="owner-email-input" />
             <button className="button button-main" type="submit">Add owner</button>

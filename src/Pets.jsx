@@ -6,7 +6,7 @@ import Table from "./Table";
 import useFetch from "./useFetch";
 
 export default function Pets() {
-    const { get } = useFetch("https://pet-hotel-375a8-default-rtdb.europe-west1.firebasedatabase.app/");
+    const { get, del } = useFetch("https://pet-hotel-375a8-default-rtdb.europe-west1.firebasedatabase.app/");
 
     const [pet, setPet] = useState();
     const [owner, setOwner] = useState();
@@ -26,6 +26,9 @@ export default function Pets() {
     function handleOwnerChange(data) {
         setOwner({...owner, data});
     }
+    function handlePersonDelete(endpoint, person) {
+        del(endpoint + person + ".json");
+    }
 
     return (<>
         <Navbar />
@@ -33,13 +36,13 @@ export default function Pets() {
             <div className="container">
                 <div className="tab">
                     <h2 className="tab-heading title--lg">Pets</h2>
-                    <AddPetForm onPetChange={handlePetChange} />
-                    <Table pet={pet} />
+                    <AddPetForm owner={owner} onPetChange={handlePetChange} />
+                    <Table onDel={handlePersonDelete} pet={pet} />
                 </div>
                 <div className="tab">
                     <h2 className="tab-heading title--lg">Pet Owners</h2>
                     <AddOwnerForm onOwnerChange={handleOwnerChange} />
-                    <Table owner={owner} />
+                    <Table onDel={handlePersonDelete} owner={owner} />
                 </div>
             </div>
         </main>

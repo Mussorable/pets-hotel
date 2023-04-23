@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import useFetch from "./useFetch";
 
-export default function AddPetForm({ onPetChange }) {
+export default function AddPetForm({ onPetChange, owner }) {
     const [petName, setPetName] = useState("");
     const [petBreed, setPetBreed] = useState("");
     const [petColor, setPetColor] = useState("");
@@ -43,6 +44,13 @@ export default function AddPetForm({ onPetChange }) {
         "Sam Green",
         "Oleh"
     ];
+
+    function getOwners() {
+        const result = [];
+        // owner && Object.values(owner).forEach(item => result.push(item.ownerName));
+        owner && Object.entries(owner).forEach(person => result.push([person[0], person[1].ownerName]));
+        return result;
+    }
 
     function refreshForm() {
         setPetName("");
@@ -88,7 +96,7 @@ export default function AddPetForm({ onPetChange }) {
                 {petColors.map((color, index) => { return <option key={index} value={color}>{color}</option> })}
             </datalist>
             <datalist id="suggested-owners">
-            {petOwners.map((owner, index) => { return <option key={index} value={owner}>{owner}</option> })}
+                {getOwners().map(person => { return <option key={person[0]} data-value={person[0]} value={person[1]}>{person[1]}</option> })}
             </datalist>
             <button className="button button-main" type="submit">Add pet</button>
         </form>

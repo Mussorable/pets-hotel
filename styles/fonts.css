@@ -10,6 +10,10 @@
   font-size: 0.9rem;
 }
 
+.text--exm {
+  font-size: 0.7rem;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
