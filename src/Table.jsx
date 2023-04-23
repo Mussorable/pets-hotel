@@ -6,7 +6,7 @@ export default function Table({ getObject }) {
     const [person, setPerson] = useState({});
 
     useEffect(() => {
-        getObject.then(data => Object.entries(data).forEach(item => console.log(item[1])));
+        getObject.then(data => setPerson(data))
     }, []);
 
     return (
@@ -22,6 +22,17 @@ export default function Table({ getObject }) {
                 </tr>
             </thead>
             <tbody>
+                { person && Object.values(person).map(pet => <tr key={Math.random()}>
+                    <td>{pet.petName}</td>
+                    <td>{pet.petBreed}</td>
+                    <td>{pet.petColor}</td>
+                    <td></td>
+                    <td>{pet.petOwner}</td>
+                    <td>
+                        <button>Act</button>
+                        <button>Act</button>
+                    </td>
+                </tr>) }
             </tbody>
         </table>
     );
