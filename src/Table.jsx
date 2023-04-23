@@ -2,36 +2,40 @@ import { useState } from "react";
 import { useEffect } from "react";
 import useFetch from "./useFetch";
 
-export default function Table({ getObject }) {
-    const [person, setPerson] = useState({});
-
-    useEffect(() => {
-        getObject.then(data => setPerson(data))
-    }, []);
+export default function Table({ owner, pet }) {
 
     return (
         <table>
             <thead>
-                <tr>
+                { pet && <tr>
                     <th>Name</th>
                     <th>Breed</th>
                     <th>Color</th>
                     <th>Checked In</th>
                     <th>Pet Owner</th>
                     <th>Actions</th>
-                </tr>
+                </tr> }
+                { owner && <tr>
+                    <th>ID</th>
+                    <th>Owner Name</th>
+                    <th>Email</th>
+                    <th>Pets</th>
+                </tr> }
             </thead>
             <tbody>
-                { person && Object.values(person).map(pet => <tr key={Math.random()}>
-                    <td>{pet.petName}</td>
-                    <td>{pet.petBreed}</td>
-                    <td>{pet.petColor}</td>
+                { pet && Object.values(pet).map(animal => <tr key={Math.random()}>
+                    <td>{animal.petName}</td>
+                    <td>{animal.petBreed}</td>
+                    <td>{animal.petColor}</td>
                     <td></td>
-                    <td>{pet.petOwner}</td>
+                    <td>{animal.petOwner}</td>
                     <td>
-                        <button>Act</button>
-                        <button>Act</button>
+                        <button className="button button-table--check button-table-padding text--sm">check in</button>
+                        <button className="button button-table--del button-table-padding text--sm">delete</button>
                     </td>
+                </tr>) }
+                { owner && Object.values(owner).map(person => <tr key={Math.random()}>
+                    td
                 </tr>) }
             </tbody>
         </table>
