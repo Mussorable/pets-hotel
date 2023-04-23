@@ -37,14 +37,6 @@ export default function AddPetForm({ onPetChange, owner }) {
         "Yellow"
     ];
 
-    const petOwners = [
-        "Mike",
-        "John Doe",
-        "Anthony",
-        "Sam Green",
-        "Oleh"
-    ];
-
     function getOwners() {
         const result = [];
         // owner && Object.values(owner).forEach(item => result.push(item.ownerName));

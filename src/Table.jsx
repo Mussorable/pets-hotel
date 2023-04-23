@@ -24,7 +24,7 @@ export default function Table({ owner, pet, onDel }) {
                 </tr> }
             </thead>
             <tbody>
-                { pet && Object.entries(pet).map(animal => <tr key={Math.random()}>
+                { pet && Object.entries(pet).map(animal => <tr data-id={animal[0]} key={Math.random()}>
                     <td>{animal[1].petName}</td>
                     <td>{animal[1].petBreed}</td>
                     <td>{animal[1].petColor}</td>
@@ -35,8 +35,8 @@ export default function Table({ owner, pet, onDel }) {
                         <button onClick={() => onDel("pets/", animal[0])} className="button button-table--del button-table-padding text--sm">delete</button>
                     </td>
                 </tr>) }
-                { owner && Object.entries(owner).map(person => <tr key={Math.random()}>
-                    <td className="text--exm">{person[0]}</td>
+                { owner && Object.entries(owner).map(person => <tr data-id={person[0]} key={Math.random()}>
+                    <td className="text--exm">{person[0] != "data" ? person[0] : "will be after page reload"}</td>
                     <td>{person[1].ownerName}</td>
                     <td>{person[1].ownerEmail}</td>
                     <td></td>

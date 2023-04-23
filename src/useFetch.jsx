@@ -60,10 +60,10 @@ export default function useFetch(baseUrl) {
         .then(data => {
           if (!data) {
             setLoading(false);
-            return reject(data);
+            return resolve(data);
           }
           setLoading(false);
-          resolve(data);
+          reject(data);
         })
         .catch(error => {
           setLoading(false);

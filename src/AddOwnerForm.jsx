@@ -14,6 +14,11 @@ export default function AddOwnerForm({ onOwnerChange }) {
             ownerEmail
         });
 
+        onOwnerChange({
+            ownerName,
+            ownerEmail
+        });
+
         setOwnerName("");
         setOwnerEmail("");
     }

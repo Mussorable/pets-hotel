@@ -28,6 +28,11 @@ export default function Pets() {
     }
     function handlePersonDelete(endpoint, person) {
         del(endpoint + person + ".json");
+        document.querySelectorAll("tr").forEach(item => {
+            if (item.getAttribute("data-id") === person) {
+                item.remove();
+            }
+        });
     }
 
     return (<>
