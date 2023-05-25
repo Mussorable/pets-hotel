@@ -1,0 +1,21 @@
+@use "_variables" as v
+
+body
+    .input
+        padding: 9px 10px
+        font-size: 0.9rem
+        border: 2px solid v.$border-color
+        border-radius: 5px
+
+    .button
+        background-color: v.$button-color
+        font-weight: bold
+        opacity: 0.9
+        transition: .3s
+        text-decoration: none
+        color: v.$text-color
+
+        &:hover
+            background-color: v.$button-color-hover
+            opacity: 1
+            cursor: pointer
