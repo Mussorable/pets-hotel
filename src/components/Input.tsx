@@ -1,12 +1,14 @@
 import clsx from "clsx";
+import { ChangeEvent, HTMLAttributes, InputHTMLAttributes } from "react";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: boolean;
   placeholder?: string;
   id: string;
   type: string;
   srOnly?: boolean;
   value?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -16,6 +18,8 @@ const Input: React.FC<InputProps> = ({
   type,
   srOnly,
   value,
+  onChange,
+  ...restProps
 }) => {
   const labelClasses = clsx({
     "sr-only": srOnly,
@@ -39,6 +43,8 @@ const Input: React.FC<InputProps> = ({
         value={value}
         className={inputClasses}
         placeholder={placeholder}
+        onChange={onChange}
+        {...restProps}
       />
     </>
   );
