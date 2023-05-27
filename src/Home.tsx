@@ -2,12 +2,27 @@ import Notification from "./components/Notification";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store/rootReducer";
+import {
+  setPetBreed,
+  setPetColor,
+  setPetName,
+  setPetOwner,
+} from "./store/petSlice";
 
 interface HomeProps {
   isUpdated: boolean;
 }
 
 const Home: React.FC<HomeProps> = ({ isUpdated }) => {
+  const petName = useSelector((state: RootState) => state.pet.petName);
+  const petBreed = useSelector((state: RootState) => state.pet.petBreed);
+  const petColor = useSelector((state: RootState) => state.pet.petColor);
+  const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+
+  const dispatch = useDispatch();
+
   return (
     <div className="main-page">
       <div className="heading-wrapper">
@@ -25,6 +40,8 @@ const Home: React.FC<HomeProps> = ({ isUpdated }) => {
             type={"text"}
             srOnly={true}
             label={true}
+            onChange={(event) => dispatch(setPetName(event.target.value))}
+            required
           />
           <Input
             placeholder={"Pet breed"}
@@ -32,6 +49,8 @@ const Home: React.FC<HomeProps> = ({ isUpdated }) => {
             type={"text"}
             srOnly={true}
             label={true}
+            onChange={(event) => dispatch(setPetBreed(event.target.value))}
+            required
           />
           <Input
             placeholder={"Pet color"}
@@ -39,6 +58,8 @@ const Home: React.FC<HomeProps> = ({ isUpdated }) => {
             type={"text"}
             srOnly={true}
             label={true}
+            onChange={(event) => dispatch(setPetColor(event.target.value))}
+            required
           />
           <Input
             placeholder={"Pet owner"}
@@ -46,6 +67,8 @@ const Home: React.FC<HomeProps> = ({ isUpdated }) => {
             type={"text"}
             srOnly={true}
             label={true}
+            onChange={(event) => dispatch(setPetOwner(event.target.value))}
+            required
           />
           <Input
             label={false}
