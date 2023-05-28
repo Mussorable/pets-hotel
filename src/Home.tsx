@@ -10,18 +10,31 @@ import {
   setPetName,
   setPetOwner,
 } from "./store/petSlice";
+import { AxiosInstance } from "axios";
+import React from "react";
 
 interface HomeProps {
   isUpdated: boolean;
+  api: AxiosInstance;
 }
 
-const Home: React.FC<HomeProps> = ({ isUpdated }) => {
+const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
   const petName = useSelector((state: RootState) => state.pet.petName);
   const petBreed = useSelector((state: RootState) => state.pet.petBreed);
   const petColor = useSelector((state: RootState) => state.pet.petColor);
   const petOwner = useSelector((state: RootState) => state.pet.petOwner);
 
   const dispatch = useDispatch();
+
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const response = await api.post("pets.json", {
+      petName,
+      petBreed,
+      petColor,
+      petOwner,
+    });
+  };
 
   return (
     <div className="main-page">
@@ -33,7 +46,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated }) => {
       </div>
       {isUpdated && <Notification />}
       <div className="form-wrapper">
-        <Form id="add-pet-form">
+        <Form onSubmit={handleFormSubmit} id="add-pet-form">
           <Input
             placeholder={"Pet name"}
             id={"pet-name"}
