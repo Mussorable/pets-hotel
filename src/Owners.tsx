@@ -1,3 +1,4 @@
+import { AxiosInstance } from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Form from "./components/Form";
@@ -8,12 +9,28 @@ import { RootState } from "./store/rootReducer";
 
 interface OwnersProps {
   isUpdated: boolean;
+  api: AxiosInstance;
 }
 
-const Owners: React.FC<OwnersProps> = ({ isUpdated }) => {
+const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
   const ownerName = useSelector((state: RootState) => state.owner.ownerName);
   const ownerEmail = useSelector((state: RootState) => state.owner.ownerEmail);
+
   const dispatch = useDispatch();
+
+  const resetForm = () => {
+    dispatch(setOwnerName(""));
+    dispatch(setOwnerEmail(""));
+  };
+
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const response = await api.post("owners.json", {
+      ownerName,
+      ownerEmail,
+    });
+    resetForm();
+  };
 
   return (
     <>
@@ -25,7 +42,7 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated }) => {
       </div>
       {isUpdated && <Notification />}
       <div className="form-wrapper">
-        <Form id="add-pet-form">
+        <Form onSubmit={handleFormSubmit} id="add-pet-form">
           <Input
             placeholder={"Pet owner name"}
             id={"pet-owner-name"}
