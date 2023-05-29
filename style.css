@@ -18,10 +18,12 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-#root .form-wrapper {
+#root .form-wrapper,
+#root .table-wrapper {
   margin-top: 1rem;
 }
-#root .form-wrapper form {
+#root .form-wrapper form,
+#root .table-wrapper form {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -37,7 +39,7 @@ body .input {
 body .button {
   background-color: #24a0ed;
   font-weight: bold;
-  opacity: 0.9;
+  opacity: 0.85;
   transition: 0.3s;
   text-decoration: none;
   color: #121212;
@@ -46,6 +48,23 @@ body .button:hover {
   background-color: #0ba6ff;
   opacity: 1;
   cursor: pointer;
+}
+body .table {
+  border-radius: 4px;
+  border: none;
+  margin-inline: 0.2em;
+  color: white;
+  padding: 6px 10px;
+  font-weight: normal;
+}
+body .button.action {
+  background-color: #3fc7d1;
+}
+body .button.action:hover {
+  background-color: #33d1dd;
+}
+body .button.del {
+  background-color: #ff3333;
 }
 
 body .sr-only {
@@ -62,4 +81,16 @@ body .heading {
   font-size: 3rem;
   margin: 0;
   margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+table td, table th {
+  border: 1px solid #d3d3d3;
+  text-align: left;
+  padding-left: 1em;
+  padding-block: 0.6em;
 }/*# sourceMappingURL=style.css.map */

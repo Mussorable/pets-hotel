@@ -10,7 +10,7 @@ export interface PetState {
   pets: Draft<PetsProp>[];
 }
 
-interface PetsProp {
+export interface PetsProp {
   petName: string;
   petBreed: string;
   petColor: string;
