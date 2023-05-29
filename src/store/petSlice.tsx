@@ -1,6 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Draft } from "immer";
 
 export interface PetState {
+  petName: string;
+  petBreed: string;
+  petColor: string;
+  petOwner: string;
+
+  pets: Draft<PetsProp>[];
+}
+
+interface PetsProp {
   petName: string;
   petBreed: string;
   petColor: string;
@@ -12,6 +22,8 @@ const initialState: PetState = {
   petBreed: "",
   petColor: "",
   petOwner: "",
+
+  pets: [],
 };
 
 const petSlice = createSlice({
@@ -30,9 +42,13 @@ const petSlice = createSlice({
     setPetOwner: (state, action: PayloadAction<string>) => {
       state.petOwner = action.payload;
     },
+
+    setPets: (state, action: PayloadAction<Draft<PetsProp>[]>) => {
+      state.pets = action.payload;
+    },
   },
 });
 
-export const { setPetName, setPetBreed, setPetColor, setPetOwner } =
+export const { setPetName, setPetBreed, setPetColor, setPetOwner, setPets } =
   petSlice.actions;
 export default petSlice.reducer;

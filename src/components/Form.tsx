@@ -8,11 +8,11 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ id, children, onSubmit }) => {
   return (
-    <>
+    <div className="form-wrapper">
       <form onSubmit={onSubmit} action="" id={id}>
         {children}
       </form>
-    </>
+    </div>
   );
 };
 

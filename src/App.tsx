@@ -22,7 +22,7 @@ function App() {
           <Route path="/" element={<Home api={api} isUpdated={isUpdated} />} />
           <Route
             path="/pet-owners"
-            element={<Owners isUpdated={isUpdated} />}
+            element={<Owners api={api} isUpdated={isUpdated} />}
           />
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ChangeEvent, HTMLAttributes, InputHTMLAttributes } from "react";
+import { ChangeEvent, InputHTMLAttributes } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: boolean;

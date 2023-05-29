@@ -9,9 +9,11 @@ import {
   setPetColor,
   setPetName,
   setPetOwner,
+  setPets,
 } from "./store/petSlice";
 import { AxiosInstance } from "axios";
-import React from "react";
+import React, { useEffect } from "react";
+import Table from "./components/Table";
 
 interface HomeProps {
   isUpdated: boolean;
@@ -23,17 +25,36 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
   const petBreed = useSelector((state: RootState) => state.pet.petBreed);
   const petColor = useSelector((state: RootState) => state.pet.petColor);
   const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+  const pets = useSelector((state: RootState) => state.pet.pets);
 
   const dispatch = useDispatch();
 
+  const resetForm = () => {
+    dispatch(setPetName(""));
+    dispatch(setPetBreed(""));
+    dispatch(setPetColor(""));
+    dispatch(setPetOwner(""));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await api
+        .get("pets.json")
+        .then((resp) => dispatch(setPets(Object.values(resp.data))));
+    };
+
+    fetchData();
+  }, []);
+
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await api.post("pets.json", {
+    await api.post("pets.json", {
       petName,
       petBreed,
       petColor,
       petOwner,
     });
+    resetForm();
   };
 
   return (
@@ -45,52 +66,55 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
         </Link>
       </div>
       {isUpdated && <Notification />}
-      <div className="form-wrapper">
-        <Form onSubmit={handleFormSubmit} id="add-pet-form">
-          <Input
-            placeholder={"Pet name"}
-            id={"pet-name"}
-            type={"text"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setPetName(event.target.value))}
-            required
-          />
-          <Input
-            placeholder={"Pet breed"}
-            id={"pet-breed"}
-            type={"text"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setPetBreed(event.target.value))}
-            required
-          />
-          <Input
-            placeholder={"Pet color"}
-            id={"pet-color"}
-            type={"text"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setPetColor(event.target.value))}
-            required
-          />
-          <Input
-            placeholder={"Pet owner"}
-            id={"pet-owner"}
-            type={"text"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setPetOwner(event.target.value))}
-            required
-          />
-          <Input
-            label={false}
-            id={"submit-form"}
-            type={"submit"}
-            value="Add Pet"
-          />
-        </Form>
-      </div>
+      <Form onSubmit={handleFormSubmit} id="add-pet-form">
+        <Input
+          value={petName}
+          placeholder={"Pet name"}
+          id={"pet-name"}
+          type={"text"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setPetName(event.target.value))}
+          required
+        />
+        <Input
+          value={petBreed}
+          placeholder={"Pet breed"}
+          id={"pet-breed"}
+          type={"text"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setPetBreed(event.target.value))}
+          required
+        />
+        <Input
+          value={petColor}
+          placeholder={"Pet color"}
+          id={"pet-color"}
+          type={"text"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setPetColor(event.target.value))}
+          required
+        />
+        <Input
+          value={petOwner}
+          placeholder={"Pet owner"}
+          id={"pet-owner"}
+          type={"text"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setPetOwner(event.target.value))}
+          required
+        />
+        <Input
+          label={false}
+          id={"submit-form"}
+          type={"submit"}
+          value="Add Pet"
+        />
+      </Form>
+      <Table object={pets} />
     </div>
   );
 };
