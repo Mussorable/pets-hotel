@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import Notification from "./components/Notification";
-import { setOwnerEmail, setOwnerName } from "./store/ownerSlice";
+import { setOwnerEmail, setOwnerName, setOwners } from "./store/ownerSlice";
 import { RootState } from "./store/rootReducer";
+import Table from "./components/Table";
+import { useEffect } from "react";
 
 interface OwnersProps {
   isUpdated: boolean;
@@ -15,8 +17,19 @@ interface OwnersProps {
 const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
   const ownerName = useSelector((state: RootState) => state.owner.ownerName);
   const ownerEmail = useSelector((state: RootState) => state.owner.ownerEmail);
+  const owners = useSelector((state: RootState) => state.owner.owners);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await api
+        .get("owners.json")
+        .then((resp) => dispatch(setOwners(Object.values(resp.data))));
+    };
+
+    fetchData();
+  }, []);
 
   const resetForm = () => {
     dispatch(setOwnerName(""));
@@ -25,7 +38,7 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await api.post("owners.json", {
+    await api.post("owners.json", {
       ownerName,
       ownerEmail,
     });
@@ -41,32 +54,33 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
         </Link>
       </div>
       {isUpdated && <Notification />}
-      <div className="form-wrapper">
-        <Form onSubmit={handleFormSubmit} id="add-pet-form">
-          <Input
-            placeholder={"Pet owner name"}
-            id={"pet-owner-name"}
-            type={"text"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setOwnerName(event.target.value))}
-          />
-          <Input
-            placeholder={"Email address"}
-            id={"email-address"}
-            type={"email"}
-            srOnly={true}
-            label={true}
-            onChange={(event) => dispatch(setOwnerEmail(event.target.value))}
-          />
-          <Input
-            label={false}
-            id={"submit-form"}
-            type={"submit"}
-            value="Add Pet Owner"
-          />
-        </Form>
-      </div>
+      <Form onSubmit={handleFormSubmit} id="add-pet-form">
+        <Input
+          value={ownerName}
+          placeholder={"Pet owner name"}
+          id={"pet-owner-name"}
+          type={"text"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setOwnerName(event.target.value))}
+        />
+        <Input
+          value={ownerEmail}
+          placeholder={"Email address"}
+          id={"email-address"}
+          type={"email"}
+          srOnly={true}
+          label={true}
+          onChange={(event) => dispatch(setOwnerEmail(event.target.value))}
+        />
+        <Input
+          label={false}
+          id={"submit-form"}
+          type={"submit"}
+          value="Add Pet Owner"
+        />
+      </Form>
+      <Table object={owners} subject={"owner"} />
     </>
   );
 };

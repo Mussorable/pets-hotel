@@ -114,7 +114,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
           value="Add Pet"
         />
       </Form>
-      <Table object={pets} />
+      <Table object={pets} subject={"pet"} />
     </div>
   );
 };
