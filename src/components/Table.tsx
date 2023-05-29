@@ -1,7 +1,15 @@
+import { Draft } from "@reduxjs/toolkit";
 import Button from "./Button";
 
+interface ObjectProp {
+  petName: string;
+  petBreed: string;
+  petColor: string;
+  petOwner: string;
+}
+
 interface TableProps {
-  object: string[];
+  object: Draft<ObjectProp>[];
 }
 
 const Table: React.FC<TableProps> = ({ object }) => {
@@ -20,14 +28,14 @@ const Table: React.FC<TableProps> = ({ object }) => {
         </thead>
         <tbody>
           {object &&
-            object.map((item) => {
+            object.map((item, index) => {
               return (
-                <tr>
+                <tr key={index}>
+                  <td>{item.petName}</td>
+                  <td>{item.petBreed}</td>
+                  <td>{item.petColor}</td>
                   <td>td</td>
-                  <td>td</td>
-                  <td>td</td>
-                  <td>td</td>
-                  <td>td</td>
+                  <td>{item.petOwner}</td>
                   <td>
                     <Button>check in/out</Button>
                     <Button>del</Button>

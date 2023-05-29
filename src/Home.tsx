@@ -9,9 +9,10 @@ import {
   setPetColor,
   setPetName,
   setPetOwner,
+  setPets,
 } from "./store/petSlice";
 import { AxiosInstance } from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "./components/Table";
 
 interface HomeProps {
@@ -24,6 +25,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
   const petBreed = useSelector((state: RootState) => state.pet.petBreed);
   const petColor = useSelector((state: RootState) => state.pet.petColor);
   const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+  const pets = useSelector((state: RootState) => state.pet.pets);
 
   const dispatch = useDispatch();
 
@@ -34,9 +36,19 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
     dispatch(setPetOwner(""));
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await api
+        .get("pets.json")
+        .then((resp) => dispatch(setPets(Object.values(resp.data))));
+    };
+
+    fetchData();
+  }, []);
+
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const response = await api.post("pets.json", {
+    await api.post("pets.json", {
       petName,
       petBreed,
       petColor,
@@ -102,7 +114,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
           value="Add Pet"
         />
       </Form>
-      <Table object={[]}></Table>
+      <Table object={pets} />
     </div>
   );
 };
