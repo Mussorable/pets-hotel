@@ -6,6 +6,7 @@ export interface OwnerState {
   ownerEmail: string;
 
   owners: Draft<OwnersProp>[];
+  IDs: Array<string>;
 }
 
 export interface OwnersProp {
@@ -18,6 +19,7 @@ const initialState: OwnerState = {
   ownerEmail: "",
 
   owners: [],
+  IDs: [],
 };
 
 const ownerSlice = createSlice({
@@ -30,11 +32,16 @@ const ownerSlice = createSlice({
     setOwnerEmail: (state, action: PayloadAction<string>) => {
       state.ownerEmail = action.payload;
     },
+
     setOwners: (state, action: PayloadAction<Draft<OwnersProp>[]>) => {
       state.owners = action.payload;
+    },
+    setIDs: (state, action: PayloadAction<Array<string>>) => {
+      state.IDs = action.payload;
     },
   },
 });
 
-export const { setOwnerName, setOwnerEmail, setOwners } = ownerSlice.actions;
+export const { setOwnerName, setOwnerEmail, setOwners, setIDs } =
+  ownerSlice.actions;
 export default ownerSlice.reducer;

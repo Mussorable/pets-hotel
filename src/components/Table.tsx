@@ -1,21 +1,44 @@
 import { Draft } from "@reduxjs/toolkit";
+import { AxiosInstance } from "axios";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { OwnersProp } from "../store/ownerSlice";
 import { PetsProp } from "../store/petSlice";
 import Button from "./Button";
-
-interface ObjectProp {
-  petName: string;
-  petBreed: string;
-  petColor: string;
-  petOwner: string;
-}
+import {
+  setContent,
+  setIsNotification,
+  setWarning,
+} from "../store/notificationSlice";
 
 interface TableProps {
   object: Draft<PetsProp>[] | Draft<OwnersProp>[];
+  IDs: Array<string>;
   subject: "pet" | "owner";
+  api: AxiosInstance;
 }
 
-const Table: React.FC<TableProps> = ({ object, subject }) => {
+const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (object.length === 0) {
+      dispatch(setContent("Table is empty"));
+      dispatch(setIsNotification(true));
+      dispatch(setWarning(true));
+    }
+  }, [object]);
+
+  const handleDeleteClick = (
+    endpoint: string,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const target = event.target as HTMLButtonElement;
+    api
+      .delete(`${endpoint}/${target.id}.json`)
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div className="table-wrapper">
       <table>
@@ -26,7 +49,7 @@ const Table: React.FC<TableProps> = ({ object, subject }) => {
                 <th>Name</th>
                 <th>Breed</th>
                 <th>Color</th>
-                <th>Checked id</th>
+                <th>Checked in</th>
                 <th>Pet Owner</th>
                 <th>Action</th>
               </>
@@ -42,23 +65,28 @@ const Table: React.FC<TableProps> = ({ object, subject }) => {
             )}
           </tr>
         </thead>
-
         <tbody>
           {object &&
             object.map((item, index) => {
               if ("petName" in item) {
                 return (
-                  <tr key={index}>
+                  <tr key={IDs[index]}>
                     <td>{item.petName}</td>
                     <td>{item.petBreed}</td>
                     <td>{item.petColor}</td>
-                    <td>td</td>
+                    <td>{!item.petCheckIn && "Not checked in"}</td>
                     <td>{item.petOwner}</td>
                     <td>
-                      <Button action={true} table={true}>
-                        check in/out
+                      <Button data-index={index} action={true} table={true}>
+                        {!item.petCheckIn && "check in"}
+                        {item.petCheckIn && "check out"}
                       </Button>
-                      <Button del={true} table={true}>
+                      <Button
+                        id={IDs[index]}
+                        del={true}
+                        table={true}
+                        onClick={(event) => handleDeleteClick("pets", event)}
+                      >
                         del
                       </Button>
                     </td>
@@ -73,7 +101,12 @@ const Table: React.FC<TableProps> = ({ object, subject }) => {
                     <td>{item.ownerEmail}</td>
                     <td>count</td>
                     <td>
-                      <Button action={true} table={true} del={true}>
+                      <Button
+                        id={IDs[index]}
+                        table={true}
+                        del={true}
+                        onClick={(event) => handleDeleteClick("owners", event)}
+                      >
                         Delete
                       </Button>
                     </td>
