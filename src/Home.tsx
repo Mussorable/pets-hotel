@@ -1,10 +1,10 @@
-import Notification from "./components/Notification";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store/rootReducer";
 import {
+  setIDs,
   setPetBreed,
   setPetColor,
   setPetName,
@@ -14,18 +14,28 @@ import {
 import { AxiosInstance } from "axios";
 import React, { useEffect } from "react";
 import Table from "./components/Table";
+import Notification from "./components/Notification";
 
 interface HomeProps {
-  isUpdated: boolean;
   api: AxiosInstance;
 }
 
-const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
+const Home: React.FC<HomeProps> = ({ api }) => {
   const petName = useSelector((state: RootState) => state.pet.petName);
   const petBreed = useSelector((state: RootState) => state.pet.petBreed);
   const petColor = useSelector((state: RootState) => state.pet.petColor);
   const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+  const petCheckIn = useSelector((state: RootState) => state.pet.petCheckIn);
+  const petIDs = useSelector((state: RootState) => state.pet.IDs);
+
   const pets = useSelector((state: RootState) => state.pet.pets);
+
+  const isNotification = useSelector(
+    (state: RootState) => state.notification.isNotification
+  );
+  const notificationContent = useSelector(
+    (state: RootState) => state.notification.content
+  );
 
   const dispatch = useDispatch();
 
@@ -38,9 +48,12 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await api
-        .get("pets.json")
-        .then((resp) => dispatch(setPets(Object.values(resp.data))));
+      await api.get("pets.json").then((resp) => {
+        if (resp.data) {
+          dispatch(setPets(Object.values(resp.data)));
+          dispatch(setIDs(Object.keys(resp.data)));
+        }
+      });
     };
 
     fetchData();
@@ -53,6 +66,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
       petBreed,
       petColor,
       petOwner,
+      petCheckIn,
     });
     resetForm();
   };
@@ -65,7 +79,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
           Owners
         </Link>
       </div>
-      {isUpdated && <Notification />}
+      {isNotification && <Notification>{notificationContent}</Notification>}
       <Form onSubmit={handleFormSubmit} id="add-pet-form">
         <Input
           value={petName}
@@ -114,7 +128,7 @@ const Home: React.FC<HomeProps> = ({ isUpdated, api }) => {
           value="Add Pet"
         />
       </Form>
-      <Table object={pets} subject={"pet"} />
+      <Table object={pets} subject={"pet"} IDs={petIDs} api={api} />
     </div>
   );
 };

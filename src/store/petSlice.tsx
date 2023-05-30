@@ -6,8 +6,10 @@ export interface PetState {
   petBreed: string;
   petColor: string;
   petOwner: string;
+  petCheckIn: boolean;
 
   pets: Draft<PetsProp>[];
+  IDs: Array<string>;
 }
 
 export interface PetsProp {
@@ -15,6 +17,7 @@ export interface PetsProp {
   petBreed: string;
   petColor: string;
   petOwner: string;
+  petCheckIn: boolean;
 }
 
 const initialState: PetState = {
@@ -22,8 +25,10 @@ const initialState: PetState = {
   petBreed: "",
   petColor: "",
   petOwner: "",
+  petCheckIn: false,
 
   pets: [],
+  IDs: [],
 };
 
 const petSlice = createSlice({
@@ -46,9 +51,18 @@ const petSlice = createSlice({
     setPets: (state, action: PayloadAction<Draft<PetsProp>[]>) => {
       state.pets = action.payload;
     },
+    setIDs: (state, action: PayloadAction<Array<string>>) => {
+      state.IDs = action.payload;
+    },
   },
 });
 
-export const { setPetName, setPetBreed, setPetColor, setPetOwner, setPets } =
-  petSlice.actions;
+export const {
+  setPetName,
+  setPetBreed,
+  setPetColor,
+  setPetOwner,
+  setPets,
+  setIDs,
+} = petSlice.actions;
 export default petSlice.reducer;

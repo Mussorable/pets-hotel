@@ -8,6 +8,7 @@ import { setOwnerEmail, setOwnerName, setOwners } from "./store/ownerSlice";
 import { RootState } from "./store/rootReducer";
 import Table from "./components/Table";
 import { useEffect } from "react";
+import { setIDs } from "./store/ownerSlice";
 
 interface OwnersProps {
   isUpdated: boolean;
@@ -18,14 +19,16 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
   const ownerName = useSelector((state: RootState) => state.owner.ownerName);
   const ownerEmail = useSelector((state: RootState) => state.owner.ownerEmail);
   const owners = useSelector((state: RootState) => state.owner.owners);
+  const ownerIDs = useSelector((state: RootState) => state.owner.IDs);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      await api
-        .get("owners.json")
-        .then((resp) => dispatch(setOwners(Object.values(resp.data))));
+      await api.get("owners.json").then((resp) => {
+        dispatch(setOwners(Object.values(resp.data)));
+        dispatch(setIDs(Object.keys(resp.data)));
+      });
     };
 
     fetchData();
@@ -80,7 +83,7 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
           value="Add Pet Owner"
         />
       </Form>
-      <Table object={owners} subject={"owner"} />
+      <Table object={owners} subject={"owner"} IDs={ownerIDs} api={api} />
     </>
   );
 };

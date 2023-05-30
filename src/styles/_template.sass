@@ -1,4 +1,17 @@
+@use "_variables" as v
+
 #root
+    .notification
+        display: inline-block
+        width: 100%
+        padding: 10px 2rem
+        border-radius: 5px
+        font-weight: bold
+
+    .notification.warning
+        background-color: v.$red-color-rgba
+        border: 3px solid v.$red-border-color
+
     .heading-wrapper
         display: flex
         align-items: center
