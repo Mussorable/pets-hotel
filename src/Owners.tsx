@@ -11,23 +11,31 @@ import { useEffect } from "react";
 import { setIDs } from "./store/ownerSlice";
 
 interface OwnersProps {
-  isUpdated: boolean;
   api: AxiosInstance;
 }
 
-const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
+const Owners: React.FC<OwnersProps> = ({ api }) => {
   const ownerName = useSelector((state: RootState) => state.owner.ownerName);
   const ownerEmail = useSelector((state: RootState) => state.owner.ownerEmail);
   const owners = useSelector((state: RootState) => state.owner.owners);
   const ownerIDs = useSelector((state: RootState) => state.owner.IDs);
+
+  const isNotification = useSelector(
+    (state: RootState) => state.notification.isNotification
+  );
+  const notificationContent = useSelector(
+    (state: RootState) => state.notification.content
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       await api.get("owners.json").then((resp) => {
-        dispatch(setOwners(Object.values(resp.data)));
-        dispatch(setIDs(Object.keys(resp.data)));
+        if (resp.data) {
+          dispatch(setOwners(Object.values(resp.data)));
+          dispatch(setIDs(Object.keys(resp.data)));
+        }
       });
     };
 
@@ -56,7 +64,7 @@ const Owners: React.FC<OwnersProps> = ({ isUpdated, api }) => {
           Home page
         </Link>
       </div>
-      {isUpdated && <Notification />}
+      {isNotification && <Notification>{notificationContent}</Notification>}
       <Form onSubmit={handleFormSubmit} id="add-pet-form">
         <Input
           value={ownerName}
