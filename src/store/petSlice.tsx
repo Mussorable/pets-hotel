@@ -47,7 +47,6 @@ const petSlice = createSlice({
     setPetOwner: (state, action: PayloadAction<string>) => {
       state.petOwner = action.payload;
     },
-
     setPets: (state, action: PayloadAction<Draft<PetsProp>[]>) => {
       state.pets = action.payload;
     },

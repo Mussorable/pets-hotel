@@ -32,7 +32,6 @@ const ownerSlice = createSlice({
     setOwnerEmail: (state, action: PayloadAction<string>) => {
       state.ownerEmail = action.payload;
     },
-
     setOwners: (state, action: PayloadAction<Draft<OwnersProp>[]>) => {
       state.owners = action.payload;
     },

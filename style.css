@@ -69,10 +69,10 @@ body .table {
   font-weight: normal;
 }
 body .button.action {
-  background-color: #3fc7d1;
+  background-color: #29727c;
 }
 body .button.action:hover {
-  background-color: #33d1dd;
+  background-color: #3aa3b1;
 }
 body .button.del {
   background-color: #ff3333;

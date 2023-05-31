@@ -22,12 +22,33 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setIsNotification(false));
     if (object.length === 0) {
       dispatch(setContent("Table is empty"));
       dispatch(setIsNotification(true));
       dispatch(setWarning(true));
     }
   }, [object]);
+
+  const handleCheckInClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const target = (event.target as HTMLButtonElement).getAttribute(
+      "data-index"
+    );
+
+    if (target) {
+      api.get(`pets/${IDs[parseInt(target)]}/petCheckIn.json`).then((resp) => {
+        if (resp.data === true) {
+          api.patch(`pets/${IDs[parseInt(target)]}.json`, {
+            petCheckIn: false,
+          });
+        } else if (resp.data === false) {
+          api.patch(`pets/${IDs[parseInt(target)]}.json`, {
+            petCheckIn: true,
+          });
+        }
+      });
+    }
+  };
 
   const handleDeleteClick = (
     endpoint: string,
@@ -77,7 +98,12 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                     <td>{!item.petCheckIn && "Not checked in"}</td>
                     <td>{item.petOwner}</td>
                     <td>
-                      <Button data-index={index} action={true} table={true}>
+                      <Button
+                        data-index={index}
+                        action={true}
+                        table={true}
+                        onClick={handleCheckInClick}
+                      >
                         {!item.petCheckIn && "check in"}
                         {item.petCheckIn && "check out"}
                       </Button>
