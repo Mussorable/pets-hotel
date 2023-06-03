@@ -8,7 +8,8 @@ import { setOwnerEmail, setOwnerName, setOwners } from "./store/ownerSlice";
 import { RootState } from "./store/rootReducer";
 import Table from "./components/Table";
 import { useEffect } from "react";
-import { setIDs } from "./store/ownerSlice";
+import { setIDsOwners } from "./store/ownerSlice";
+import { OwnersProp } from "./store/ownerSlice";
 
 interface OwnersProps {
   api: AxiosInstance;
@@ -34,7 +35,7 @@ const Owners: React.FC<OwnersProps> = ({ api }) => {
       await api.get("owners.json").then((resp) => {
         if (resp.data) {
           dispatch(setOwners(Object.values(resp.data)));
-          dispatch(setIDs(Object.keys(resp.data)));
+          dispatch(setIDsOwners(Object.keys(resp.data)));
         }
       });
     };
@@ -49,10 +50,23 @@ const Owners: React.FC<OwnersProps> = ({ api }) => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await api.post("owners.json", {
-      ownerName,
-      ownerEmail,
-    });
+    await api
+      .post("owners.json", {
+        ownerName,
+        ownerEmail,
+      })
+      .then((resp) => {
+        dispatch(
+          setOwners([
+            ...owners,
+            {
+              ownerName,
+              ownerEmail,
+            },
+          ])
+        );
+        dispatch(setIDsOwners([...ownerIDs, resp.data.name]));
+      });
     resetForm();
   };
 

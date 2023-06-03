@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Draft } from "immer";
 
 export interface OwnerState {
   ownerName: string;
   ownerEmail: string;
-
-  owners: Draft<OwnersProp>[];
+  owners: OwnersProp[];
   IDs: Array<string>;
 }
 
@@ -32,15 +30,15 @@ const ownerSlice = createSlice({
     setOwnerEmail: (state, action: PayloadAction<string>) => {
       state.ownerEmail = action.payload;
     },
-    setOwners: (state, action: PayloadAction<Draft<OwnersProp>[]>) => {
+    setOwners: (state, action: PayloadAction<OwnersProp[]>) => {
       state.owners = action.payload;
     },
-    setIDs: (state, action: PayloadAction<Array<string>>) => {
+    setIDsOwners: (state, action: PayloadAction<Array<string>>) => {
       state.IDs = action.payload;
     },
   },
 });
 
-export const { setOwnerName, setOwnerEmail, setOwners, setIDs } =
+export const { setOwnerName, setOwnerEmail, setOwners, setIDsOwners } =
   ownerSlice.actions;
 export default ownerSlice.reducer;
