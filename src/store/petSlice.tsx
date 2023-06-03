@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Draft } from "immer";
 
 export interface PetState {
   petName: string;
@@ -7,8 +6,7 @@ export interface PetState {
   petColor: string;
   petOwner: string;
   petCheckIn: boolean;
-
-  pets: Draft<PetsProp>[];
+  pets: PetsProp[];
   IDs: Array<string>;
 }
 
@@ -47,7 +45,7 @@ const petSlice = createSlice({
     setPetOwner: (state, action: PayloadAction<string>) => {
       state.petOwner = action.payload;
     },
-    setPets: (state, action: PayloadAction<Draft<PetsProp>[]>) => {
+    setPets: (state, action: PayloadAction<PetsProp[]>) => {
       state.pets = action.payload;
     },
     setIDs: (state, action: PayloadAction<Array<string>>) => {

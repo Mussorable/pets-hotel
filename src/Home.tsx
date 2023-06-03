@@ -61,13 +61,29 @@ const Home: React.FC<HomeProps> = ({ api }) => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await api.post("pets.json", {
-      petName,
-      petBreed,
-      petColor,
-      petOwner,
-      petCheckIn,
-    });
+    await api
+      .post("pets.json", {
+        petName,
+        petBreed,
+        petColor,
+        petOwner,
+        petCheckIn,
+      })
+      .then((resp) => {
+        dispatch(
+          setPets([
+            ...pets,
+            {
+              petName,
+              petBreed,
+              petColor,
+              petOwner,
+              petCheckIn,
+            },
+          ])
+        );
+        dispatch(setIDs([...petIDs, resp.data.name]));
+      });
     resetForm();
   };
 
@@ -75,7 +91,7 @@ const Home: React.FC<HomeProps> = ({ api }) => {
     <div className="main-page">
       <div className="heading-wrapper">
         <h1 className="heading">Pets</h1>
-        <Link to="/pet-owners" className="input button">
+        <Link to="/owners" className="input button">
           Owners
         </Link>
       </div>

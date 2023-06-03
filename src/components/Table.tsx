@@ -2,8 +2,8 @@ import { Draft } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { OwnersProp } from "../store/ownerSlice";
-import { PetsProp } from "../store/petSlice";
+import { OwnersProp, setOwners, setIDsOwners } from "../store/ownerSlice";
+import { PetsProp, setIDs, setPets } from "../store/petSlice";
 import Button from "./Button";
 import {
   setContent,
@@ -28,6 +28,9 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
       dispatch(setIsNotification(true));
       dispatch(setWarning(true));
     }
+    if (object.length > 0) {
+      dispatch(setIsNotification(false));
+    }
   }, [object]);
 
   const handleCheckInClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,13 +53,58 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
     }
   };
 
+  function isPetsProp(obj: unknown): obj is PetsProp {
+    return (
+      typeof obj === "object" &&
+      obj !== null &&
+      "petName" in obj &&
+      "petBreed" in obj &&
+      "petColor" in obj &&
+      "petOwner" in obj &&
+      "petCheckIn" in obj
+    );
+  }
+
+  function isOwnerProp(obj: unknown): obj is OwnersProp {
+    return (
+      typeof obj === "object" &&
+      obj !== null &&
+      "ownerName" in obj &&
+      "ownerEmail" in obj
+    );
+  }
+
   const handleDeleteClick = (
     endpoint: string,
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
+    subject: "pet" | "owner"
   ) => {
     const target = event.target as HTMLButtonElement;
     api
       .delete(`${endpoint}/${target.id}.json`)
+      .then(() => {
+        if (subject === "pet") {
+          dispatch(setIDs(IDs.filter((id) => id !== target.id)));
+          const getPosition = IDs.indexOf(target.id);
+          const updatedArray: PetsProp[] = [...object] as PetsProp[];
+          const filteredArray: PetsProp[] = updatedArray.filter(
+            (_, index) => index !== getPosition
+          );
+          if (filteredArray.every(isPetsProp)) {
+            dispatch(setPets(filteredArray));
+          }
+        } else if (subject === "owner") {
+          dispatch(setIDsOwners(IDs.filter((id) => id !== target.id)));
+          const getPosition = IDs.indexOf(target.id);
+          const updatedArray: OwnersProp[] = [...object] as OwnersProp[];
+          const filteredArray: OwnersProp[] = updatedArray.filter(
+            (_, index) => index !== getPosition
+          );
+          if (filteredArray.every(isOwnerProp)) {
+            dispatch(setOwners(filteredArray));
+          }
+        }
+      })
       .catch((error) => console.log(error));
   };
 
@@ -111,7 +159,9 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                         id={IDs[index]}
                         del={true}
                         table={true}
-                        onClick={(event) => handleDeleteClick("pets", event)}
+                        onClick={(event) =>
+                          handleDeleteClick("pets", event, "pet")
+                        }
                       >
                         del
                       </Button>
@@ -131,7 +181,9 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                         id={IDs[index]}
                         table={true}
                         del={true}
-                        onClick={(event) => handleDeleteClick("owners", event)}
+                        onClick={(event) =>
+                          handleDeleteClick("owners", event, "owner")
+                        }
                       >
                         Delete
                       </Button>
