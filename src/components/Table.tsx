@@ -1,6 +1,6 @@
 import { Draft } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { OwnersProp, setOwners, setIDsOwners } from "../store/ownerSlice";
 import { PetsProp, setIDs, setPets } from "../store/petSlice";
@@ -19,15 +19,21 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
-  const [checkIn, setCheckIn] = useState(false);
+  const getTime = new Date();
+  const checkInRef = useRef<HTMLButtonElement[]>([]);
+  const checkInTimeText = useRef<any[]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (subject === "pet") {
       api.get("pets.json").then((resp) => {
-        Object.values(resp.data).forEach((pet) => {
+        Object.values(resp.data).forEach((pet, index) => {
           if (isPetsProp(pet)) {
-            setCheckIn(pet.petCheckIn);
+            if (pet.petCheckIn === false) {
+              checkInRef.current[index].textContent = "check in";
+            } else if (pet.petCheckIn === true) {
+              checkInRef.current[index].textContent = "check out";
+            }
           }
         });
       });
@@ -35,15 +41,13 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
   }, []);
 
   useEffect(() => {
-    if (subject === "pet") {
+    dispatch(setIsNotification(false));
+    if (object.length > 0) {
       dispatch(setIsNotification(false));
-      if (object.length > 0) {
-        dispatch(setIsNotification(false));
-      } else if (object.length === 0) {
-        dispatch(setContent("Table is empty"));
-        dispatch(setIsNotification(true));
-        dispatch(setWarning(true));
-      }
+    } else if (object.length === 0) {
+      dispatch(setContent("Table is empty"));
+      dispatch(setIsNotification(true));
+      dispatch(setWarning(true));
     }
   }, [object]);
 
@@ -62,13 +66,35 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
               .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
                 petCheckIn: false,
               })
-              .then(() => (target.textContent = "check in"));
+              .then(() => {
+                api
+                  .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
+                    timeCheckIn: `Checked out at ${getTime.getHours()}:${getTime.getMinutes()}`,
+                  })
+                  .then(() => {
+                    checkInTimeText.current[
+                      parseInt(targetIndex)
+                    ].textContent = `Checked out at ${getTime.getHours()}:${getTime.getMinutes()}`;
+                  });
+                target.textContent = "check in";
+              });
           } else if (resp.data === false) {
             api
               .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
                 petCheckIn: true,
               })
-              .then(() => (target.textContent = "check out"));
+              .then(() => {
+                api
+                  .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
+                    timeCheckIn: `Checked in at ${getTime.getHours()}:${getTime.getMinutes()}`,
+                  })
+                  .then(() => {
+                    checkInTimeText.current[
+                      parseInt(targetIndex)
+                    ].textContent = `Checked in at ${getTime.getHours()}:${getTime.getMinutes()}`;
+                  });
+                target.textContent = "check out";
+              });
           }
         });
     }
@@ -164,17 +190,18 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                     <td>{item.petName}</td>
                     <td>{item.petBreed}</td>
                     <td>{item.petColor}</td>
-                    <td>{!item.petCheckIn && "Not checked in"}</td>
+                    <td ref={(ref) => (checkInTimeText.current[index] = ref!)}>
+                      {item.timeCheckIn}
+                    </td>
                     <td>{item.petOwner}</td>
                     <td>
                       <Button
+                        ref={(ref) => (checkInRef.current[index] = ref!)}
                         data-index={index}
                         action={true}
                         table={true}
                         onClick={handleCheckInClick}
-                      >
-                        {checkIn ? "check out" : "check in"}
-                      </Button>
+                      />
                       <Button
                         id={IDs[index]}
                         del={true}

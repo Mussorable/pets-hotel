@@ -7,6 +7,7 @@ export interface PetState {
   allOwners: string[];
   petOwner: string;
   petCheckIn: boolean;
+  timeCheckIn: string;
   pets: PetsProp[];
   IDs: Array<string>;
 }
@@ -17,6 +18,7 @@ export interface PetsProp {
   petColor: string;
   petOwner: string;
   petCheckIn: boolean;
+  timeCheckIn: string;
 }
 
 const initialState: PetState = {
@@ -24,6 +26,7 @@ const initialState: PetState = {
   petBreed: "",
   petOwner: "",
   petColor: "",
+  timeCheckIn: "Not checked in",
   allOwners: [],
   petCheckIn: false,
 

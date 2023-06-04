@@ -29,6 +29,7 @@ const Home: React.FC<HomeProps> = ({ api }) => {
   const petCheckIn = useSelector((state: RootState) => state.pet.petCheckIn);
   const petIDs = useSelector((state: RootState) => state.pet.IDs);
   const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+  const timeCheckIn = useSelector((state: RootState) => state.pet.timeCheckIn);
 
   const pets = useSelector((state: RootState) => state.pet.pets);
 
@@ -80,6 +81,7 @@ const Home: React.FC<HomeProps> = ({ api }) => {
         petBreed,
         petColor,
         petOwner,
+        timeCheckIn,
         petCheckIn,
       })
       .then((resp) => {
@@ -91,6 +93,7 @@ const Home: React.FC<HomeProps> = ({ api }) => {
               petBreed,
               petColor,
               petOwner,
+              timeCheckIn,
               petCheckIn,
             },
           ])
