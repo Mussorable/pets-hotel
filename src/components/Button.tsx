@@ -1,34 +1,31 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, forwardRef, Ref } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   table?: boolean;
   action?: boolean;
   del?: boolean;
+  ref?: Ref<HTMLButtonElement>;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  action = false,
-  del = false,
-  table = false,
-  ...rest
-}) => {
-  const buttonClasses = clsx({
-    button: true,
-    action: action,
-    del: del,
-    table: table,
-  });
+const Button: React.FC<ButtonProps> = forwardRef(
+  ({ children, action = false, del = false, table = false, ...rest }, ref) => {
+    const buttonClasses = clsx({
+      button: true,
+      action: action,
+      del: del,
+      table: table,
+    });
 
-  return (
-    <>
-      <button {...rest} className={buttonClasses}>
-        {children}
-      </button>
-    </>
-  );
-};
+    return (
+      <>
+        <button ref={ref} {...rest} className={buttonClasses}>
+          {children}
+        </button>
+      </>
+    );
+  }
+);
 
 export default Button;
