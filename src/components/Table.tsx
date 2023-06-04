@@ -1,6 +1,6 @@
 import { Draft } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { OwnersProp, setOwners, setIDsOwners } from "../store/ownerSlice";
 import { PetsProp, setIDs, setPets } from "../store/petSlice";
@@ -19,37 +19,58 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
+  const [checkIn, setCheckIn] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setIsNotification(false));
-    if (object.length === 0) {
-      dispatch(setContent("Table is empty"));
-      dispatch(setIsNotification(true));
-      dispatch(setWarning(true));
+    if (subject === "pet") {
+      api.get("pets.json").then((resp) => {
+        Object.values(resp.data).forEach((pet) => {
+          if (isPetsProp(pet)) {
+            setCheckIn(pet.petCheckIn);
+          }
+        });
+      });
     }
-    if (object.length > 0) {
+  }, []);
+
+  useEffect(() => {
+    if (subject === "pet") {
       dispatch(setIsNotification(false));
+      if (object.length > 0) {
+        dispatch(setIsNotification(false));
+      } else if (object.length === 0) {
+        dispatch(setContent("Table is empty"));
+        dispatch(setIsNotification(true));
+        dispatch(setWarning(true));
+      }
     }
   }, [object]);
 
   const handleCheckInClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const target = (event.target as HTMLButtonElement).getAttribute(
+    const targetIndex = (event.target as HTMLButtonElement).getAttribute(
       "data-index"
     );
+    const target = event.target as HTMLButtonElement;
 
-    if (target) {
-      api.get(`pets/${IDs[parseInt(target)]}/petCheckIn.json`).then((resp) => {
-        if (resp.data === true) {
-          api.patch(`pets/${IDs[parseInt(target)]}.json`, {
-            petCheckIn: false,
-          });
-        } else if (resp.data === false) {
-          api.patch(`pets/${IDs[parseInt(target)]}.json`, {
-            petCheckIn: true,
-          });
-        }
-      });
+    if (targetIndex) {
+      api
+        .get(`pets/${IDs[parseInt(targetIndex)]}/petCheckIn.json`)
+        .then((resp) => {
+          if (resp.data === true) {
+            api
+              .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
+                petCheckIn: false,
+              })
+              .then(() => (target.textContent = "check in"));
+          } else if (resp.data === false) {
+            api
+              .patch(`pets/${IDs[parseInt(targetIndex)]}.json`, {
+                petCheckIn: true,
+              })
+              .then(() => (target.textContent = "check out"));
+          }
+        });
     }
   };
 
@@ -152,8 +173,7 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                         table={true}
                         onClick={handleCheckInClick}
                       >
-                        {!item.petCheckIn && "check in"}
-                        {item.petCheckIn && "check out"}
+                        {checkIn ? "check out" : "check in"}
                       </Button>
                       <Button
                         id={IDs[index]}
@@ -172,7 +192,7 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
               if ("ownerName" in item) {
                 return (
                   <tr key={index}>
-                    <td>id</td>
+                    <td>{index}</td>
                     <td>{item.ownerName}</td>
                     <td>{item.ownerEmail}</td>
                     <td>count</td>

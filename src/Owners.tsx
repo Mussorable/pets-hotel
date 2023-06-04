@@ -9,7 +9,6 @@ import { RootState } from "./store/rootReducer";
 import Table from "./components/Table";
 import { useEffect } from "react";
 import { setIDsOwners } from "./store/ownerSlice";
-import { OwnersProp } from "./store/ownerSlice";
 
 interface OwnersProps {
   api: AxiosInstance;

@@ -10,6 +10,7 @@ import {
   setPetName,
   setPetOwner,
   setPets,
+  setAllOwners,
 } from "./store/petSlice";
 import { AxiosInstance } from "axios";
 import React, { useEffect } from "react";
@@ -24,9 +25,10 @@ const Home: React.FC<HomeProps> = ({ api }) => {
   const petName = useSelector((state: RootState) => state.pet.petName);
   const petBreed = useSelector((state: RootState) => state.pet.petBreed);
   const petColor = useSelector((state: RootState) => state.pet.petColor);
-  const petOwner = useSelector((state: RootState) => state.pet.petOwner);
+  const allOwners = useSelector((state: RootState) => state.pet.allOwners);
   const petCheckIn = useSelector((state: RootState) => state.pet.petCheckIn);
   const petIDs = useSelector((state: RootState) => state.pet.IDs);
+  const petOwner = useSelector((state: RootState) => state.pet.petOwner);
 
   const pets = useSelector((state: RootState) => state.pet.pets);
 
@@ -43,7 +45,6 @@ const Home: React.FC<HomeProps> = ({ api }) => {
     dispatch(setPetName(""));
     dispatch(setPetBreed(""));
     dispatch(setPetColor(""));
-    dispatch(setPetOwner(""));
   };
 
   useEffect(() => {
@@ -56,7 +57,19 @@ const Home: React.FC<HomeProps> = ({ api }) => {
       });
     };
 
+    const fetchOwners = async () => {
+      await api.get("owners.json").then((resp) => {
+        if (resp.data) {
+          const ownerNames = Object.values(resp.data).map(
+            (owner) => (owner as { ownerName: string }).ownerName
+          );
+          dispatch(setAllOwners(ownerNames));
+        }
+      });
+    };
+
     fetchData();
+    fetchOwners();
   }, []);
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -127,16 +140,25 @@ const Home: React.FC<HomeProps> = ({ api }) => {
           onChange={(event) => dispatch(setPetColor(event.target.value))}
           required
         />
-        <Input
-          value={petOwner}
-          placeholder={"Pet owner"}
-          id={"pet-owner"}
-          type={"text"}
-          srOnly={true}
-          label={true}
+        <label htmlFor="pet-owner1" className="sr-only">
+          Pet owner
+        </label>
+        <select
           onChange={(event) => dispatch(setPetOwner(event.target.value))}
+          id="pet-owner1"
+          className="select input"
           required
-        />
+        >
+          <option value="">Owner</option>;
+          {allOwners &&
+            allOwners.map((owner, index) => {
+              return (
+                <option key={index} value={owner}>
+                  {owner}
+                </option>
+              );
+            })}
+        </select>
         <Input
           label={false}
           id={"submit-form"}
