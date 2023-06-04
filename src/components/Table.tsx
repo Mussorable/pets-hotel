@@ -20,8 +20,10 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
   const getTime = new Date();
+
   const checkInRef = useRef<HTMLButtonElement[]>([]);
   const checkInTimeText = useRef<any[]>([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -175,7 +177,6 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                 <th>ID</th>
                 <th>Owner Name</th>
                 <th>Email</th>
-                <th>Pets</th>
                 <th>Action</th>
               </>
             )}
@@ -201,7 +202,9 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                         action={true}
                         table={true}
                         onClick={handleCheckInClick}
-                      />
+                      >
+                        check in
+                      </Button>
                       <Button
                         id={IDs[index]}
                         del={true}
@@ -222,7 +225,6 @@ const Table: React.FC<TableProps> = ({ object, subject, IDs, api }) => {
                     <td>{index}</td>
                     <td>{item.ownerName}</td>
                     <td>{item.ownerEmail}</td>
-                    <td>count</td>
                     <td>
                       <Button
                         id={IDs[index]}
