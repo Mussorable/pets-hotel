@@ -41,6 +41,15 @@ body {
   gap: 10px;
 }
 
+body .select {
+  all: unset;
+  padding: 7px 23px 7px 7px !important;
+  cursor: pointer;
+  background-image: url("src/assets/arrow.svg");
+  background-position: calc(100% - 3px) center;
+  background-repeat: no-repeat;
+  background-size: 18px;
+}
 body .input {
   padding: 9px 10px;
   font-size: 0.9rem;

@@ -4,6 +4,7 @@ export interface PetState {
   petName: string;
   petBreed: string;
   petColor: string;
+  allOwners: string[];
   petOwner: string;
   petCheckIn: boolean;
   pets: PetsProp[];
@@ -21,8 +22,9 @@ export interface PetsProp {
 const initialState: PetState = {
   petName: "",
   petBreed: "",
-  petColor: "",
   petOwner: "",
+  petColor: "",
+  allOwners: [],
   petCheckIn: false,
 
   pets: [],
@@ -45,6 +47,9 @@ const petSlice = createSlice({
     setPetOwner: (state, action: PayloadAction<string>) => {
       state.petOwner = action.payload;
     },
+    setAllOwners: (state, action: PayloadAction<string[]>) => {
+      state.allOwners = action.payload;
+    },
     setPets: (state, action: PayloadAction<PetsProp[]>) => {
       state.pets = action.payload;
     },
@@ -58,6 +63,7 @@ export const {
   setPetName,
   setPetBreed,
   setPetColor,
+  setAllOwners,
   setPetOwner,
   setPets,
   setIDs,
